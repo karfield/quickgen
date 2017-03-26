@@ -49,10 +49,14 @@ func main() {
 		}
 		for _, flag := range config.Flags {
 			var option cli.Flag
+			flagName := flag.Name
+			if flag.Shortname != "" {
+				flagName = flagName + "," + flag.Shortname
+			}
 			switch flag.Type {
 			case "string", "":
 				option = &cli.StringFlag{
-					Name:  flag.Name,
+					Name:  flagName,
 					Value: flag.Default,
 					Usage: flag.Usage,
 				}
@@ -62,13 +66,13 @@ func main() {
 					defaultValue = int(dv)
 				}
 				option = &cli.IntFlag{
-					Name:  flag.Name,
+					Name:  flagName,
 					Value: defaultValue,
 					Usage: flag.Usage,
 				}
 			case "bool", "boolean":
 				option = &cli.BoolFlag{
-					Name:  flag.Name,
+					Name:  flagName,
 					Usage: flag.Usage,
 				}
 			}

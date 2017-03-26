@@ -89,7 +89,20 @@ func (c *GeneratorContext) copyAndApplyTemplate() error {
 	for _, flag := range c.Config.Flags {
 		switch flag.Type {
 		case "string", "":
-			data[flag.Name] = c.Cmd.String(flag.Name)
+			value := c.Cmd.String(flag.Name)
+			if len(flag.Options) > 0 {
+				hasOne := false
+				for _, opt := range flag.Options {
+					if opt == value {
+						hasOne = true
+						break
+					}
+				}
+				if !hasOne {
+					return errors.New(fmt.Sprintf("option '%s'(value: %s) not matched in %v", flag.Name, value, flag.Options))
+				}
+			}
+			data[flag.Name] = value
 		case "int":
 			data[flag.Name] = c.Cmd.Int(flag.Name)
 		case "bool", "boolean":
