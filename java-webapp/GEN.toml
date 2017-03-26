@@ -1,4 +1,9 @@
 
+# mvn archetype:create 
+#  -DgroupId=[your project's group id]
+#  -DartifactId=[your project's artifact id]
+#  -DarchetypeArtifactId=maven-archetype-webapp
+
 name = "java-webapp"
 desc = "generate a maven archetype-layouted webapp"
 
