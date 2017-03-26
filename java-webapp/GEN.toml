@@ -1,0 +1,52 @@
+
+name = "java-webapp"
+desc = "generate a maven archetype-layouted webapp"
+
+[[flags]]
+    name = "group"
+    shortname = "g"
+    desc = "set group id"
+
+[[flags]]
+    name = "artifact"
+    shortname = "a"
+    desc = "set artifact id"
+
+[[flags]]
+    name = "packaging"
+    shortname = "p"
+    default = "war"
+    options = ["war", "jar"]
+    desc = "set packaging format"
+
+[[flags]]
+    name = "version"
+    shortname = "v"
+    default = "1.0.0"
+
+[[flags]]
+    name = "snapshot"
+    type = "bool"
+    shortname = "s"
+    default = "true"
+
+[[steps]]
+    type = "copy"
+    res = "pom.xml"
+    target = "pom.xml"
+
+[[steps]]
+    type = "mkdir"
+    dirs = ["src/main/java",
+            "src/main/resources",
+            "src/main/webapp/WEB-INF"]
+
+[[steps]]
+    type = "copy"
+    res = "web.xml"
+    target = "src/main/webapp/WEB-INF/web.xml"
+
+[[steps]]
+    type = "copy"
+    res = "applicationContext.xml"
+    target = "src/main/resources/applicationContext.xml"
