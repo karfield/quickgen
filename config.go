@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"os/user"
 	"path/filepath"
 
 	"github.com/BurntSushi/toml"
@@ -75,35 +74,24 @@ func ParseFromFile(filename string) (*Config, error) {
 	return &config, nil
 }
 
-func fileExist(path string) bool {
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		return false
-	}
-	return true
-}
-
 func ScanConfigs() []*Config {
 	configs := []*Config{}
-	if u, err := user.Current(); err != nil {
+	templateDir := templateDir()
+	if dirs, err := ioutil.ReadDir(templateDir); err != nil {
 		return configs
 	} else {
-		automatorDir := filepath.Join(u.HomeDir, ".project-templates")
-		if dirs, err := ioutil.ReadDir(automatorDir); err != nil {
-			return configs
-		} else {
-			for _, dir := range dirs {
-				if dir.IsDir() {
-					configDir := filepath.Join(automatorDir, dir.Name())
-					configPath := filepath.Join(configDir, "GEN.toml")
-					if fileExist(configPath) {
-						if config, err := ParseFromFile(configPath); err != nil {
-							fmt.Fprintf(os.Stderr, "parse config file(%s) error %v\n", configPath, err)
-							continue
-						} else {
-							configs = append(configs, config)
-						}
-
+		for _, dir := range dirs {
+			if dir.IsDir() {
+				configDir := filepath.Join(templateDir, dir.Name())
+				configPath := filepath.Join(configDir, "GEN.toml")
+				if fileExist(configPath) {
+					if config, err := ParseFromFile(configPath); err != nil {
+						fmt.Fprintf(os.Stderr, "parse config file(%s) error %v\n", configPath, err)
+						continue
+					} else {
+						configs = append(configs, config)
 					}
+
 				}
 			}
 		}

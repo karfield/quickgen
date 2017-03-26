@@ -37,7 +37,13 @@ func main() {
 	cmdline.Usage = "util for generating codes quickly"
 	cmdline.HelpName = "guickgen"
 	cmdline.Version = "1.0.0"
-	cmdline.Commands = []cli.Command{}
+	cmdline.Commands = []cli.Command{
+		cli.Command{
+			Name:   "sync",
+			Usage:  "sync templates",
+			Action: syncCommand,
+		},
+	}
 
 	configs := ScanConfigs()
 	for _, config := range configs {
