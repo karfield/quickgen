@@ -3,10 +3,9 @@ package main
 import (
 	"os"
 
+	git "github.com/karfield/go-git"
+	"github.com/karfield/go-git/plumbing"
 	"github.com/urfave/cli"
-
-	"gopkg.in/src-d/go-git.v4"
-	"gopkg.in/src-d/go-git.v4/plumbing"
 )
 
 func SyncTemplates() error {
