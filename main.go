@@ -1,12 +1,9 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strconv"
-	"strings"
 
 	"github.com/urfave/cli"
 )
@@ -16,27 +13,17 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	dirs, err := ioutil.ReadDir(cwd)
-	if err != nil {
-		panic(err)
-	}
-	if len(dirs) > 0 {
-		reader := bufio.NewReader(os.Stdin)
-		fmt.Fprintf(os.Stderr, "WorkDir does not clean, are you sure want to go on? (Y/n)")
-		text, _ := reader.ReadString('\n')
-		text = strings.Trim(strings.ToLower(text), " \t\n\r")
-		switch text {
-		case "y", "yes", "":
-			//fmt.Fprintf(os.Stdout, "Continue this command.\n")
-		default:
-			os.Exit(0)
-		}
-	}
 	cmdline := cli.NewApp()
 	cmdline.Name = "quickgen"
 	cmdline.Usage = "util for generating codes quickly"
 	cmdline.HelpName = "guickgen"
 	cmdline.Version = "1.0.0"
+	cmdline.Flags = []cli.Flag{
+		cli.BoolFlag{
+			Name:  "sync,s",
+			Usage: "set '--sync' to sync templates before generate layouts",
+		},
+	}
 	cmdline.Commands = []cli.Command{
 		cli.Command{
 			Name:   "sync",
@@ -44,6 +31,7 @@ func main() {
 			Action: syncCommand,
 		},
 	}
+	cmdline.Before = beforeRun
 
 	configs := ScanConfigs()
 	for _, config := range configs {
@@ -92,4 +80,21 @@ func main() {
 	}
 
 	cmdline.Run(os.Args)
+}
+
+func syncCommand(context *cli.Context) error {
+	return SyncTemplates()
+}
+
+func beforeRun(context *cli.Context) error {
+	if context.Bool("sync") {
+		fmt.Fprintf(os.Stdout, "Sync templates ...")
+		if err := SyncTemplates(); err != nil {
+			fmt.Fprintf(os.Stdout, " failed.\n")
+			fmt.Fprintf(os.Stderr, "sync failure reason: %v\n", err)
+		} else {
+			fmt.Fprintf(os.Stdout, " synced!\n")
+		}
+	}
+	return nil
 }

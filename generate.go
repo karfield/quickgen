@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bufio"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 	"text/template"
 
 	"github.com/urfave/cli"
@@ -20,6 +23,19 @@ type GeneratorContext struct {
 
 func GenerateAction(config *Config) cli.ActionFunc {
 	return func(context *cli.Context) error {
+		if isWorkDirEmpty() {
+			reader := bufio.NewReader(os.Stdin)
+			fmt.Fprintf(os.Stderr, "WorkDir does not clean, are you sure to continue? (Y/n)")
+			text, _ := reader.ReadString('\n')
+			text = strings.Trim(strings.ToLower(text), " \t\n\r")
+			switch text {
+			case "y", "yes", "":
+				//fmt.Fprintf(os.Stdout, "Continue this command.\n")
+				return nil
+			default:
+				return errors.New("stopped by user")
+			}
+		}
 		for idx, step := range config.Steps {
 			gc := &GeneratorContext{
 				Config:      config,

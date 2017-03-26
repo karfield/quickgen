@@ -5,7 +5,6 @@ import (
 
 	git "github.com/karfield/go-git"
 	"github.com/karfield/go-git/plumbing"
-	"github.com/urfave/cli"
 )
 
 func SyncTemplates() error {
@@ -28,7 +27,6 @@ func SyncTemplates() error {
 		err = repo.Pull(&git.PullOptions{
 			ReferenceName: plumbing.ReferenceName("refs/heads/templates"),
 			SingleBranch:  true,
-			Depth:         1,
 		})
 		if err == git.NoErrAlreadyUpToDate {
 			err = nil
@@ -37,8 +35,4 @@ func SyncTemplates() error {
 
 	//fmt.Printf("templates has been updated\n")
 	return err
-}
-
-func syncCommand(context *cli.Context) error {
-	return SyncTemplates()
 }
