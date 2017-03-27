@@ -6,6 +6,9 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
+
+	yaml "gopkg.in/yaml.v2"
 
 	"github.com/BurntSushi/toml"
 )
@@ -16,7 +19,7 @@ type Flag struct {
 	Type      string
 	Default   string
 	Options   []string
-	Usage     string `toml:"desc"`
+	Usage     string `toml:"desc" yaml:"desc"`
 }
 
 type Step struct {
@@ -28,7 +31,7 @@ type Step struct {
 
 type GenConfig struct {
 	Name         string
-	Description  string `toml:"desc"`
+	Description  string `toml:"desc" yaml:"desc"`
 	Flags        []Flag
 	Steps        []Step
 	FinishNotice string
@@ -41,10 +44,21 @@ type Config struct {
 
 func ParseFromFile(filename string) (*Config, error) {
 	var config Config
-	if _, err := toml.DecodeFile(filename, &config.GenConfig); err != nil {
-		return nil, err
+	if strings.HasSuffix(filename, ".toml") {
+		if _, err := toml.DecodeFile(filename, &config.GenConfig); err != nil {
+			return nil, err
+		} else {
+			//fmt.Printf("%v\n", metadata)
+		}
 	} else {
-		//fmt.Printf("%v\n", metadata)
+		data, err := ioutil.ReadFile(filename)
+		if err != nil {
+			return nil, err
+		}
+		err = yaml.Unmarshal(data, &config.GenConfig)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	for _, flag := range config.Flags {
@@ -85,6 +99,9 @@ func ScanConfigs() []*Config {
 			if dir.IsDir() {
 				configDir := filepath.Join(templateDir, dir.Name())
 				configPath := filepath.Join(configDir, "GEN.toml")
+				if !fileExist(configPath) {
+					configPath = filepath.Join(configDir, "GEN.yaml")
+				}
 				if fileExist(configPath) {
 					if config, err := ParseFromFile(configPath); err != nil {
 						fmt.Fprintf(os.Stderr, "parse config file(%s) error %v\n", configPath, err)
