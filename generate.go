@@ -31,7 +31,6 @@ func GenerateAction(config *Config) cli.ActionFunc {
 			switch text {
 			case "y", "yes", "":
 				//fmt.Fprintf(os.Stdout, "Continue this command.\n")
-				return nil
 			default:
 				return errors.New("stopped by user")
 			}
