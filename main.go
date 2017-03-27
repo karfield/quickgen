@@ -17,7 +17,7 @@ func main() {
 	cmdline := cli.NewApp()
 	cmdline.Name = "quickstart"
 	cmdline.Usage = "start a project quickly."
-	cmdline.HelpName = "guickgen"
+	cmdline.HelpName = "guickstart"
 	cmdline.Version = "1.0.0"
 	cmdline.Flags = []cli.Flag{
 		cli.BoolFlag{
