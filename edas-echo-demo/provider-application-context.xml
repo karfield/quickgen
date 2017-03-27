@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:hsf="http://www.taobao.com/hsf" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.taobao.com/hsf
+http://www.taobao.com/hsf/hsf.xsd">
+    <bean id="provider" class="com.example.EchoServiceProvider"/>
+    <hsf:provider id="echoService" interface="com.example.EchoService" ref="provider"
+        version="{{.version}}" group="{{.group}}">
+    </hsf:provider>
+
+    <bean id="customEditorConfigurer"
+          class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="propertyEditorRegistrars">
+            <list>
+                <bean class="com.taobao.csp.sentinel.entrypoint.entrance.HSFSpringProviderBeanRegistrar"/>
+            </list>
+        </property>
+    </bean>
+    <bean id="traceMethodInterceptor" class="com.taobao.csp.sentinel.entrypoint.proxy.TraceMethodInterceptor"/>
+    <bean id="traceProxyTypeHolder" class="com.taobao.csp.sentinel.entrypoint.ProxyTypeHolder">
+        <property name="beanTypes">
+            <list>
+                <value>com.taobao.hsf.app.spring.util.HSFSpringConsumerBean</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="traceBeanTypeAutoProxyCreator" class="com.taobao.csp.sentinel.entrypoint.BeanTypeAutoProxyCreator">
+        <property name="proxyTypeHolder" ref="traceProxyTypeHolder"/>
+        <property name="interceptorNames">
+            <list>
+                <value>traceMethodInterceptor</value>
+            </list>
+        </property>
+    </bean>
+</beans>

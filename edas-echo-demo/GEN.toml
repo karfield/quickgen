@@ -1,0 +1,83 @@
+
+name = "edas-echo-demo"
+desc = "generate a simple 'echo' demo project based on Aliyun EDAS"
+
+[[flags]]
+    name = "group"
+    shortname = "g"
+    desc = "set edas service groupId"
+    default = "com.example.demo"
+
+[[flags]]
+    name = "version"
+    shortname = "v"
+    desc = "set edas service version"
+    default = "1.0.0"
+
+[[steps]]
+    type = "mkdir"
+    dirs = [
+        "api/src/main/java",
+        "api/src/main/resources",
+        "provider/src/main/java",
+        "provider/src/main/resources",
+        "provider/src/main/webapp/WEB-INF",
+        "consumer/src/main/java",
+        "consumer/src/main/resources",
+        "consumer/src/main/webapp/WEB-INF",
+    ]
+
+[[steps]]
+    type = "copy"
+    res = "pom.xml"
+    target = "pom.xml"
+
+[[steps]]
+    type = "copy"
+    res = "pom-api.xml"
+    target = "api/pom.xml"
+
+[[steps]]
+    type = "copy"
+    res = "pom-provider.xml"
+    target = "provider/pom.xml"
+
+[[steps]]
+    type = "copy"
+    res = "pom-consumer.xml"
+    target = "consumer/pom.xml"
+
+[[steps]]
+    type = "copy"
+    res = "EchoService.java"
+    target = "api/src/main/java/com/example/EchoService.java"
+
+[[steps]]
+    type = "copy"
+    res = "EchoServiceProvider.java"
+    target = "provider/src/main/java/com/example/EchoServiceProvider.java"
+
+[[steps]]
+    type = "copy"
+    res = "EchoServiceTestServlet.java"
+    target = "consumer/src/main/java/com/example/EchoServiceTestServlet.java"
+
+[[steps]]
+    type = "copy"
+    res = "provider-application-context.xml"
+    target = "provider/src/main/resources/applicationContext.xml"
+
+[[steps]]
+    type = "copy"
+    res = "consumer-application-context.xml"
+    target = "consumer/src/main/resources/applicationContext.xml"
+
+[[steps]]
+    type = "copy"
+    res = "provider-web.xml"
+    target = "provider/src/main/webapp/WEB-INF/web.xml"
+
+[[steps]]
+    type = "copy"
+    res = "consumer-web.xml"
+    target = "consumer/src/main/webapp/WEB-INF/web.xml"
