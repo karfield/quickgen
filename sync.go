@@ -18,7 +18,7 @@ func SyncTemplates() error {
 	repo, err := git.PlainOpen(templateDir)
 	if err != nil {
 		repo, err = git.PlainClone(templateDir, false, &git.CloneOptions{
-			URL:           "https://github.com/karfield/quickgen.git",
+			URL:           "https://github.com/karfield/quickstart.git",
 			ReferenceName: plumbing.ReferenceName("refs/heads/templates"),
 			SingleBranch:  true,
 			Depth:         1,
