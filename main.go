@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 
 	"github.com/urfave/cli"
@@ -14,8 +15,8 @@ func main() {
 		panic(err)
 	}
 	cmdline := cli.NewApp()
-	cmdline.Name = "quickgen"
-	cmdline.Usage = "util for generating codes quickly"
+	cmdline.Name = "quickstart"
+	cmdline.Usage = "start a project quickly."
 	cmdline.HelpName = "guickgen"
 	cmdline.Version = "1.0.0"
 	cmdline.Flags = []cli.Flag{
@@ -91,7 +92,7 @@ func syncCommand(context *cli.Context) error {
 }
 
 func beforeRun(context *cli.Context) error {
-	if context.Bool("sync") {
+	if context.Bool("sync") || !fileExist(filepath.Join(templateDir(), ".git")) {
 		fmt.Fprintf(os.Stdout, "Sync templates ...")
 		if err := SyncTemplates(); err != nil {
 			fmt.Fprintf(os.Stdout, " failed.\n")
