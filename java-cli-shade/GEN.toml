@@ -1,0 +1,26 @@
+
+# generate a executable jar with Spring Framework supported
+# refer to : http://blog.csdn.net/xiao__gui/article/details/47341385
+
+name = "java-cli-shade"
+desc = "generate a executable jar while getting ride of Spring Framework issue"
+
+[[steps]]
+    type = "mkdir"
+    dirs = ["src/main/java",
+            "src/main/resources"]
+
+[[steps]]
+    type = "copy"
+    res = "pom.xml"
+    target = "pom.xml"
+
+[[steps]]
+    type = "copy"
+    res = "Main.java"
+    target = "src/main/java/com/example/Main.java"
+
+notes = """
+use 'mvn package' to generate a standalone CLI app.
+you run 'java -jar target/demo-executable.jar' to test the result.
+"""

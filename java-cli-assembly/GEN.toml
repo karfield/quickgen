@@ -1,0 +1,33 @@
+
+# run 'mvn package' to generate single executable jar
+# run 'mvn package assembly:single' to generate if no-signle flag is set
+# refer to : http://blog.csdn.net/xiao__gui/article/details/47341385
+
+name = "java-cli-assembly"
+desc = "generate a CLI app including all depdencies"
+
+[[flags]]
+    name = "no-single"
+    shortname = "S"
+    type = "bool"
+
+[[steps]]
+    type = "mkdir"
+    dirs = ["src/main/java",
+            "src/main/resources"]
+
+[[steps]]
+    type = "copy"
+    res = "pom.xml"
+    target = "pom.xml"
+
+[[steps]]
+    type = "copy"
+    res = "Main.java"
+    target = "src/main/java/com/example/Main.java"
+
+notes = """
+use 'mvn package' to generate a standalone CLI app.
+use 'mvn package assembly:single' to generate a signle jar if '-S' is set.
+you run 'java -jar target/demo-executable-jar-with-dependencies.jar' to test the result.
+"""
