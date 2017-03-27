@@ -9,7 +9,7 @@ import (
 
 func templateDir() string {
 	u, _ := user.Current()
-	return filepath.Join(u.HomeDir, ".quickgen")
+	return filepath.Join(u.HomeDir, ".quickstart")
 }
 
 func fileExist(path string) bool {
