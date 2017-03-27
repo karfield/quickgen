@@ -5,6 +5,11 @@
 name = "java-cli-shade"
 desc = "generate a executable jar while getting ride of Spring Framework issue"
 
+finishNotice = '''
+use 'mvn package' to generate a standalone CLI app.
+you run 'java -jar target/demo-executable.jar' to test the result.
+'''
+
 [[steps]]
     type = "mkdir"
     dirs = ["src/main/java",
@@ -19,8 +24,3 @@ desc = "generate a executable jar while getting ride of Spring Framework issue"
     type = "copy"
     res = "Main.java"
     target = "src/main/java/com/example/Main.java"
-
-notes = """
-use 'mvn package' to generate a standalone CLI app.
-you run 'java -jar target/demo-executable.jar' to test the result.
-"""

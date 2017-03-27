@@ -6,6 +6,12 @@
 name = "java-cli-assembly"
 desc = "generate a CLI app including all depdencies"
 
+finishNotice = '''
+use 'mvn package' to generate a standalone CLI app.
+use 'mvn package assembly:single' to generate a signle jar if '-S' is set.
+you run 'java -jar target/demo-executable-jar-with-dependencies.jar' to test the result.
+'''
+
 [[flags]]
     name = "no-single"
     shortname = "S"
@@ -25,9 +31,3 @@ desc = "generate a CLI app including all depdencies"
     type = "copy"
     res = "Main.java"
     target = "src/main/java/com/example/Main.java"
-
-notes = """
-use 'mvn package' to generate a standalone CLI app.
-use 'mvn package assembly:single' to generate a signle jar if '-S' is set.
-you run 'java -jar target/demo-executable-jar-with-dependencies.jar' to test the result.
-"""
