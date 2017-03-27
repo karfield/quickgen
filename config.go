@@ -27,10 +27,11 @@ type Step struct {
 }
 
 type GenConfig struct {
-	Name        string
-	Description string `toml:"desc"`
-	Flags       []Flag
-	Steps       []Step
+	Name         string
+	Description  string `toml:"desc"`
+	Flags        []Flag
+	Steps        []Step
+	FinishNotice string
 }
 
 type Config struct {

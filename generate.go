@@ -62,6 +62,9 @@ func GenerateAction(config *Config) cli.ActionFunc {
 		}
 
 		fmt.Println("Finished.")
+		if config.FinishNotice != "" {
+			fmt.Println(config.FinishNotice)
+		}
 		return nil
 	}
 }
